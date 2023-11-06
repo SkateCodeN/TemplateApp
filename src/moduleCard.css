@@ -1,0 +1,12 @@
+.module-cards-container{
+    display: flex;
+    gap:20px;
+}
+.child-module-container{
+    background-color: crimson;
+    width: 90%;
+    height: 90%;
+    display: flex;
+    gap:20px;
+    overflow-x: scroll;
+}
