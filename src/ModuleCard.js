@@ -7,9 +7,10 @@ export default function ModuleCard({ module, onChange }) {
   const [updatedModule, setUpdatedModule] = useState(module);
   const [name, setName] = useState(module.name);
   const [description, setDescription] = useState(module.description);
+
   const [type, setType] = useState(module.type);
   const [order, setOrder] = useState(module.order);
-  const [modules, setModules] = useState(module.modules);
+  const [modules, setModules] = useState(new Map());
   const [moduleCount, setModuleCount] = useState(0);
   const [properties, setProperties] = useState(module.properties);
   const [showInList, setShowInList] = useState(module.showInList);
@@ -17,21 +18,22 @@ export default function ModuleCard({ module, onChange }) {
 
   useEffect(() => {
 
-    const updatedModule = new Module(module.id, name, description, type, order, modules, properties, showInList, value);
-
+    const updatedModule = new Module(module.id, name, description, type, order, Object.fromEntries(modules), properties, showInList, value);
+    console.log("updated child module")
     onChange(updatedModule);
 
   }, [name, type, description, order, modules, properties, showInList, value]);
 
   useEffect(() => {
     createChildModules()
-    
+
   }, [moduleCount]);
 
 
   const handleModuleUpdate = (updatedModules) => {
     // Create a new object for the updated template
     const newChildModules = {
+
       ...updatedModule,
       modules: {
         ...updatedModule.modules,
@@ -40,9 +42,10 @@ export default function ModuleCard({ module, onChange }) {
     };
 
     setUpdatedModule(newChildModules);
-
+    //onChange(updatedModule);
   };
 
+  //whenerver our module count changes we create new child modules
   const createChildModules = () => {
 
     const childModules = new Map();
@@ -52,37 +55,36 @@ export default function ModuleCard({ module, onChange }) {
       childModules.set(id, Module(id, "", "", "", "", {}, {}, "", ""));
 
     }
+    /*
     console.log(`ModuleCard.js (line 55) 
-        var childModules: ${JSON.stringify(Object.fromEntries(childModules))}
-        state module: ${JSON.stringify(module)}`);
-
-    //setModules(childModules);
-    handleModuleUpdate(Object.fromEntries(childModules));
+      var childModules: ${JSON.stringify(Object.fromEntries(childModules))}
+      state module: ${JSON.stringify(module)}`);
+    */
+    setModules(childModules);
+    //handleModuleUpdate(Object.fromEntries(childModules));
     //module.modules = Object.fromEntries(childModules);
 
     //setUpdatedModule(module);
 
   }
+  
   // Handle change for each input
   const handleNameChange = (e) => {
     const updatedName = e.target.value;
     setName(updatedName);
-    //onUpdate({ name: updatedName }); // Update parent state
-    //console.log("ModuleCard.js (line 11): Module Child Name -",name);
+
   };
 
   const handleDescriptionChange = (e) => {
     const updatedDescription = e.target.value;
     setDescription(updatedDescription);
-    //onUpdate({ description: updatedDescription }); // Update parent state
-    //console.log("ModuleCard.js (line 18): Module Child Description -", description);
+
   };
 
   const handleTypeChange = (e) => {
     const updatedType = e.target.value;
     setType(updatedType);
-    //onUpdate({ description: updatedDescription }); // Update parent state
-    //console.log("ModuleCard.js (line 18): Module Child Description -", description);
+
   };
   const handleOrderChange = (e) => {
     const updatedOrder = e.target.value;
@@ -178,10 +180,21 @@ export default function ModuleCard({ module, onChange }) {
           <p>uuid: {module.id}</p>
         </div>
       </div>
-      <div id={module.id} className="child-module-container">
-        <div className="child-module">
-          <div><pre>{JSON.stringify(updatedModule.modules,"",'\t')}</pre></div>
-        </div>
+
+      <div className= {Object.keys(updatedModule.modules).length ===0 ? "test-child" :"child-module-container"}>
+        {
+          modules.size === 0
+            ?
+            null
+            // Render this if `modules` is empty
+            : Array.from(modules.entries()).map(([id, module]) => (
+              <div className="child-modules" key={id}>
+
+                <ModuleCard module={module} onChange={handleModuleUpdate} />
+              </div>
+            ))
+        }
+
       </div>
     </div>
 

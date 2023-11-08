@@ -24,10 +24,11 @@ function App() {
 
 
     }
+    /*
     console.log(`App.JS(line 37) 
         var childModules: ${JSON.stringify(Object.fromEntries(childModules))}
         state modules: ${JSON.stringify(Object.fromEntries(modules))}`);
-
+    */
     setModules(childModules);
 
     mainTemplate.modules = Object.fromEntries(childModules);
@@ -48,11 +49,13 @@ function App() {
     };
   
     setTemplate(updatedTemplate);
+    /*
     console.log(`App.JS ModuleCard updated
       module ID: [ ${updatedModule.id} ]
       name: [${updatedModule.name}] description: [ ${updatedModule.description}]
       template modules datatype: ${JSON.stringify(updatedTemplate.modules[updatedModule.id])}`
     );
+    */
   };
   return (
 
@@ -69,7 +72,7 @@ function App() {
       </div>
 
       <div className="modules-div">
-        <p>Modules:</p>
+        <h4>Modules:</h4>
         {//console.log(`App.JS(line 73) 
           //state modules size: ${modules.size} 
           //state modules: ${JSON.stringify(Object.fromEntries(modules))} `)
