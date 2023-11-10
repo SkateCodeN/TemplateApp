@@ -3,9 +3,9 @@ import './App.css';
 import { useState } from 'react';
 import Template from './Template';
 import Module from './Modules';
-import createUUID from "./uuid";
 import JSONView from "./JSONView";
 import ModuleCard from "./ModuleCard";
+import { v4 as uuidv4 } from 'uuid';
 
 function App() {
   const [modules, setModules] = useState(new Map());
@@ -18,11 +18,9 @@ function App() {
     const { moduleCount } = mainTemplate;
     const childModules = new Map();
     for (let i = 0; i < moduleCount; i++) {
-      const id = createUUID();
+      const id = uuidv4();
 
       childModules.set(id, Module(id));
-
-
     }
     /*
     console.log(`App.JS(line 37) 
@@ -34,7 +32,6 @@ function App() {
     mainTemplate.modules = Object.fromEntries(childModules);
 
     setTemplate(mainTemplate);
-
 
   }
 

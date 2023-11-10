@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Module from "./Modules";
 import './moduleCard.css';
-import createUUID from "./uuid";
+import { v4 as uuidv4 } from 'uuid';
+import ChildModules from "./ChildModules";
+import ChildModule from "./ChildModule";
 
 export default function ModuleCard({ module, onChange }) {
   const [updatedModule, setUpdatedModule] = useState(module);
@@ -18,31 +19,22 @@ export default function ModuleCard({ module, onChange }) {
 
   useEffect(() => {
 
-    const updatedModule = new Module(module.id, name, description, type, order, Object.fromEntries(modules), properties, showInList, value);
-    console.log("updated child module")
     onChange(updatedModule);
 
-  }, [name, type, description, order, modules, properties, showInList, value]);
-
+  }, [updatedModule]);
+  
   useEffect(() => {
-    createChildModules()
+    createChildModules();
 
   }, [moduleCount]);
 
-
-  const handleModuleUpdate = (updatedModules) => {
-    // Create a new object for the updated template
-    const newChildModules = {
-
-      ...updatedModule,
-      modules: {
-        ...updatedModule.modules,
-        [updatedModule.id]: updatedModules
-      }
-    };
-
-    setUpdatedModule(newChildModules);
-    //onChange(updatedModule);
+  const handleChildModuleUpdate4 = (childModuleId, childModuleData) => {
+    setModules(prev => new Map(prev).set(childModuleId, childModuleData));
+    setUpdatedModule ( prevModule => ({
+      ...prevModule,
+      modules:Object.fromEntries(modules)
+      
+    }));
   };
 
   //whenerver our module count changes we create new child modules
@@ -50,10 +42,9 @@ export default function ModuleCard({ module, onChange }) {
 
     const childModules = new Map();
     for (let i = 0; i < moduleCount; i++) {
-      const id = createUUID();
+      const id = uuidv4();
 
-      childModules.set(id, Module(id, "", "", "", "", {}, {}, "", ""));
-
+      childModules.set(id, ChildModules(id, "", "", "", "", {}, "", ""));
     }
     /*
     console.log(`ModuleCard.js (line 55) 
@@ -67,12 +58,15 @@ export default function ModuleCard({ module, onChange }) {
     //setUpdatedModule(module);
 
   }
-  
+
   // Handle change for each input
   const handleNameChange = (e) => {
     const updatedName = e.target.value;
     setName(updatedName);
-
+    setUpdatedModule ( prevModule => ({
+      ...prevModule,
+      name:updatedName
+    }));
   };
 
   const handleDescriptionChange = (e) => {
@@ -115,11 +109,14 @@ export default function ModuleCard({ module, onChange }) {
   const handleValueChange = (e) => {
     const updatedValue = e.target.value;
     setValue(updatedValue);
-    //onUpdate({ description: updatedDescription }); // Update parent state
-    //console.log("ModuleCard.js (line 18): Module Child Description -", description);
+    setUpdatedModule ( prevModule => ({
+      ...prevModule,
+      value:updatedValue
+    }));
   };
   return (
     <div className="module-cards-container">
+      {/* These are the module cards ie parent modules*/}
       <div className="card">
         <input
           type="text"
@@ -181,16 +178,17 @@ export default function ModuleCard({ module, onChange }) {
         </div>
       </div>
 
-      <div className= {Object.keys(updatedModule.modules).length ===0 ? "test-child" :"child-module-container"}>
+      {/* Child Modules className= {modules.size ===0 ? "test-child" :"child-module-container"} */}
+      <div className="child-module-container">
         {
           modules.size === 0
             ?
-            null
+            <p>no children</p>
             // Render this if `modules` is empty
             : Array.from(modules.entries()).map(([id, module]) => (
               <div className="child-modules" key={id}>
 
-                <ModuleCard module={module} onChange={handleModuleUpdate} />
+                <ChildModule module={module} onChange={handleChildModuleUpdate4} />
               </div>
             ))
         }
