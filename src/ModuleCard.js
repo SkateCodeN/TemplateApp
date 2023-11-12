@@ -17,24 +17,29 @@ export default function ModuleCard({ module, onChange }) {
   const [showInList, setShowInList] = useState(module.showInList);
   const [value, setValue] = useState(module.value);
 
+  
   useEffect(() => {
 
     onChange(updatedModule);
 
   }, [updatedModule]);
   
+
   useEffect(() => {
     createChildModules();
 
   }, [moduleCount]);
 
-  const handleChildModuleUpdate4 = (childModuleId, childModuleData) => {
+  const handleChildModuleUpdate = (childModuleId, childModuleData) => {
+
     setModules(prev => new Map(prev).set(childModuleId, childModuleData));
-    setUpdatedModule ( prevModule => ({
+
+    setUpdatedModule(prevModule => ({
       ...prevModule,
-      modules:Object.fromEntries(modules)
-      
+      modules: Object.fromEntries(modules)
+
     }));
+    onChange(updatedModule);
   };
 
   //whenerver our module count changes we create new child modules
@@ -45,34 +50,27 @@ export default function ModuleCard({ module, onChange }) {
       const id = uuidv4();
 
       childModules.set(id, ChildModules(id, "", "", "", "", {}, "", ""));
-    }
-    /*
-    console.log(`ModuleCard.js (line 55) 
-      var childModules: ${JSON.stringify(Object.fromEntries(childModules))}
-      state module: ${JSON.stringify(module)}`);
-    */
+    }  
     setModules(childModules);
-    //handleModuleUpdate(Object.fromEntries(childModules));
-    //module.modules = Object.fromEntries(childModules);
-
-    //setUpdatedModule(module);
-
   }
 
   // Handle change for each input
   const handleNameChange = (e) => {
     const updatedName = e.target.value;
     setName(updatedName);
-    setUpdatedModule ( prevModule => ({
+    setUpdatedModule(prevModule => ({
       ...prevModule,
-      name:updatedName
+      name: updatedName
     }));
   };
 
   const handleDescriptionChange = (e) => {
     const updatedDescription = e.target.value;
     setDescription(updatedDescription);
-
+    setUpdatedModule(prevModule => ({
+      ...prevModule,
+      description: updatedDescription
+    }));
   };
 
   const handleTypeChange = (e) => {
@@ -99,7 +97,6 @@ export default function ModuleCard({ module, onChange }) {
     //onUpdate({ description: updatedDescription }); // Update parent state
     //console.log("ModuleCard.js (line 18): Module Child Description -", description);
   };
-
   const handleShowInListChange = (e) => {
     const updatedShowInList = e.target.value;
     setShowInList(updatedShowInList);
@@ -109,14 +106,15 @@ export default function ModuleCard({ module, onChange }) {
   const handleValueChange = (e) => {
     const updatedValue = e.target.value;
     setValue(updatedValue);
-    setUpdatedModule ( prevModule => ({
+    setUpdatedModule(prevModule => ({
       ...prevModule,
-      value:updatedValue
+      value: updatedValue
     }));
   };
+
   return (
     <div className="module-cards-container">
-      {/* These are the module cards ie parent modules*/}
+
       <div className="card">
         <input
           type="text"
@@ -184,11 +182,11 @@ export default function ModuleCard({ module, onChange }) {
           modules.size === 0
             ?
             <p>no children</p>
-            // Render this if `modules` is empty
+              // Render this if `modules` is empty
             : Array.from(modules.entries()).map(([id, module]) => (
               <div className="child-modules" key={id}>
 
-                <ChildModule module={module} onChange={handleChildModuleUpdate4} />
+                <ChildModule module={module} onChange={handleChildModuleUpdate} />
               </div>
             ))
         }
