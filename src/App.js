@@ -16,20 +16,16 @@ function App() {
   const createModules = (mainTemplate) => {
 
     const { moduleCount } = mainTemplate;
-    const childModules = new Map();
+    const childModules = {};
     for (let i = 0; i < moduleCount; i++) {
       const id = uuidv4();
 
-      childModules.set(id, Module(id));
+      childModules[id] = new Module(id);
     }
-    /*
-    console.log(`App.JS(line 37) 
-        var childModules: ${JSON.stringify(Object.fromEntries(childModules))}
-        state modules: ${JSON.stringify(Object.fromEntries(modules))}`);
-    */
+    
     setModules(childModules);
 
-    mainTemplate.modules = Object.fromEntries(childModules);
+    mainTemplate.modules = childModules;
 
     setTemplate(mainTemplate);
 
@@ -76,9 +72,9 @@ function App() {
         }
 
         {
-          modules.size === 0
+          Object.keys(modules).length === 0
             ? <p>No modules to display.</p> // Render this if `modules` is empty
-            : Array.from(modules.entries()).map(([id, module]) => (
+            : Object.entries(modules).map(([id, module]) => (
               <div key={id}>
 
                 <ModuleCard module={module} onChange={handleModuleUpdate} />
