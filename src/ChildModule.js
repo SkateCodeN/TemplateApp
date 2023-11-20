@@ -24,9 +24,6 @@ export default function ChildModule({ module, onChange }) {
         return updatedState;});
     };
 
-    
-
-  
     return (
         <div className="module-cards-container">
             <div className="child-card">

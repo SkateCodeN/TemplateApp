@@ -8,7 +8,7 @@ import ModuleCard from "./ModuleCard";
 import { v4 as uuidv4 } from 'uuid';
 
 function App() {
-  const [modules, setModules] = useState(new Map());
+  const [modules, setModules] = useState({});
   const [template, setTemplate] = useState({});
 
 
@@ -42,13 +42,7 @@ function App() {
     };
   
     setTemplate(updatedTemplate);
-    /*
-    console.log(`App.JS ModuleCard updated
-      module ID: [ ${updatedModule.id} ]
-      name: [${updatedModule.name}] description: [ ${updatedModule.description}]
-      template modules datatype: ${JSON.stringify(updatedTemplate.modules[updatedModule.id])}`
-    );
-    */
+    
   };
   return (
 
@@ -66,11 +60,6 @@ function App() {
 
       <div className="modules-div">
         <h4>Modules:</h4>
-        {//console.log(`App.JS(line 73) 
-          //state modules size: ${modules.size} 
-          //state modules: ${JSON.stringify(Object.fromEntries(modules))} `)
-        }
-
         {
           Object.keys(modules).length === 0
             ? <p>No modules to display.</p> // Render this if `modules` is empty

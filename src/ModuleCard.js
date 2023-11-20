@@ -14,7 +14,6 @@ export default function ModuleCard({ module, onChange }) {
 
 
   useEffect(() => {
-    //const completeUpdatedModule = { ...updatedModule, modules };
     onChange(updatedModule);
   }, [updatedModule])
 
@@ -25,8 +24,6 @@ export default function ModuleCard({ module, onChange }) {
   }, [moduleCount]);
 
   const handleChildModuleUpdate = (childModuleId, childModuleData) => {
-
-    //setModules(prev => new Map(prev).set(childModuleId, childModuleData));
 
     setUpdatedModule(prevModule => ({
       ...prevModule,
