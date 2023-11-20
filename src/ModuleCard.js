@@ -7,16 +7,16 @@ import ChildModule from "./ChildModule";
 
 export default function ModuleCard({ module, onChange }) {
 
-  const [updatedModule, setUpdatedModule] = useState({...module});
+  const [updatedModule, setUpdatedModule] = useState({ ...module });
 
   const [modules, setModules] = useState(new Map());
   const [moduleCount, setModuleCount] = useState(0);
- 
 
-  useEffect(() =>{
+
+  useEffect(() => {
     //const completeUpdatedModule = { ...updatedModule, modules };
     onChange(updatedModule);
-},[updatedModule])
+  }, [updatedModule])
 
 
   useEffect(() => {
@@ -24,18 +24,22 @@ export default function ModuleCard({ module, onChange }) {
 
   }, [moduleCount]);
 
-const handleChildModuleUpdate = (childModuleId, childModuleData) => {
+  const handleChildModuleUpdate = (childModuleId, childModuleData) => {
 
-    setModules(prev => new Map(prev).set(childModuleId, childModuleData));
+    //setModules(prev => new Map(prev).set(childModuleId, childModuleData));
 
     setUpdatedModule(prevModule => ({
       ...prevModule,
-      modules: Object.fromEntries(modules)
+      modules: {
+        ...prevModule.modules,
+        [childModuleId]: childModuleData
+      }
 
     }));
     onChange(updatedModule);
   };
 
+  
   //whenerver our module count changes we create new child modules
   const createChildModules = () => {
 
@@ -46,7 +50,7 @@ const handleChildModuleUpdate = (childModuleId, childModuleData) => {
       childModules.set(id, ChildModules(id, "", "", "", "", {}, "", ""));
     }
     setModules(childModules);
-  
+
   }
 
 
@@ -61,15 +65,15 @@ const handleChildModuleUpdate = (childModuleId, childModuleData) => {
     const { name, value } = e.target;
     // Update the local state with the new value for the input field
     setUpdatedModule(prevState => {
-        if (prevState[name] === value) {
-            // Value is the same, no need to update the state and re-trigger the effect
-            return prevState;
-        }
-        // Value has changed, update the state
-        const updatedState = { ...prevState, [name]: value };
-        return updatedState;
+      if (prevState[name] === value) {
+        // Value is the same, no need to update the state and re-trigger the effect
+        return prevState;
+      }
+      // Value has changed, update the state
+      const updatedState = { ...prevState, [name]: value };
+      return updatedState;
     });
-};
+  };
 
   return (
     <div className="module-cards-container">
@@ -139,7 +143,7 @@ const handleChildModuleUpdate = (childModuleId, childModuleData) => {
         {
           modules.size === 0
             ?
-            <p>Empty</p> 
+            <p>Empty</p>
             // Render this if `modules` is empty
             : Array.from(modules.entries()).map(([id, module]) => (
               <div className="child-modules" key={id}>
