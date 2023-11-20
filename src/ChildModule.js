@@ -9,10 +9,7 @@ export default function ChildModule({ module, onChange }) {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         // Update the local state with the new value for the input field
-        setLocalModuleState(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
+        setLocalModuleState(prevState => ({...prevState,[name]: value}));
     };
 
     // This effect will update the parent component whenever the local state changes
