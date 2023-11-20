@@ -5,17 +5,26 @@ export default function ChildModule({ module, onChange }) {
     // Create a single state object that contains all properties
     const [localModuleState, setLocalModuleState] = useState({ ...module });
 
+    // This effect will update the parent component whenever the local state changes
+    useEffect(() => {
+        onChange(module.id, localModuleState);
+    }, [localModuleState]);
+
     // This function will be called for every input change and updates the local state
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         // Update the local state with the new value for the input field
-        setLocalModuleState(prevState => ({...prevState,[name]: value}));
+        setLocalModuleState(prevState => {
+            if (prevState[name] === value) {
+            // Value is the same, no need to update the state and re-trigger the effect
+            return prevState;
+        }
+        // Value has changed, update the state
+        const updatedState = { ...prevState, [name]: value };
+        return updatedState;});
     };
 
-    // This effect will update the parent component whenever the local state changes
-    useEffect(() => {
-        onChange(module.id, localModuleState);
-    }, [localModuleState, module.id, onChange]);
+    
 
   
     return (
