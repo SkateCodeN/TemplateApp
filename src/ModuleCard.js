@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Module from "./Modules";
 import './moduleCard.css';
 import { v4 as uuidv4 } from 'uuid';
 import ChildModules from "./ChildModules";

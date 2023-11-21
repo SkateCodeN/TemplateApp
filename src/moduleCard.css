@@ -1,6 +1,10 @@
 .module-cards-container{
-    display: flex;
-    gap:20px;
+   
+   display: flex;
+}
+
+.n-child-container{
+    margin: 0 20px;
 }
 .child-module-container{
     background-color: crimson;
@@ -8,10 +12,9 @@
     height: 90%;
     display: flex;
     gap:20px;
-    flex-direction: row;
+   
     overflow-x: scroll;
 }
-
 
 .test-child{
     display: none;
@@ -19,10 +22,15 @@
     height: auto;
 }
 
+.child-modules{
+    background-color: blue;
+    margin: 0 20px;
+}
 
 .child-card{
     background-color: rgb(117, 35, 106);
     padding: 20px;
+    margin: 20px 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;

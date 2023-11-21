@@ -22,7 +22,7 @@ function App() {
 
       childModules[id] = new Module(id);
     }
-    
+
     setModules(childModules);
 
     mainTemplate.modules = childModules;
@@ -40,9 +40,9 @@ function App() {
         [updatedModule.id]: updatedModule
       }
     };
-  
+
     setTemplate(updatedTemplate);
-    
+
   };
   return (
 
@@ -68,7 +68,7 @@ function App() {
 
                 <ModuleCard module={module} onChange={handleModuleUpdate} />
               </div>
-          ))
+            ))
         }
       </div>
 

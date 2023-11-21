@@ -25,7 +25,7 @@ export default function ChildModule({ module, onChange }) {
     };
 
     return (
-        <div className="module-cards-container">
+        <div className="n-child-container">
             <div className="child-card">
                 <input
                     type="text"
@@ -80,8 +80,13 @@ export default function ChildModule({ module, onChange }) {
                     <p>uuid: {module.id}</p>
                 </div>
             </div>
+
+            <div>
+                <p>This is n-childs</p>
+            </div>
         </div>
 
+       
 
     );
 }
