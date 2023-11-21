@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import './moduleCard.css';
 import { v4 as uuidv4 } from 'uuid';
-import ChildModules from "./ChildModules";
+import Module from "./Modules";
 import ChildModule from "./ChildModule";
 
 export default function ModuleCard({ module, onChange }) {
@@ -43,7 +43,7 @@ export default function ModuleCard({ module, onChange }) {
     for (let i = 0; i < moduleCount; i++) {
       const id = uuidv4();
 
-      childModules.set(id, ChildModules(id, "", "", "", "", {}, "", ""));
+      childModules[id] = new Module(id);
     }
     setModules(childModules);
 
@@ -137,11 +137,11 @@ export default function ModuleCard({ module, onChange }) {
 
       <div className="child-module-container">
         {
-          modules.size === 0
+          Object.keys(modules).length === 0
             ?
             <p>Empty</p>
             // Render this if `modules` is empty
-            : Array.from(modules.entries()).map(([id, module]) => (
+            : Object.entries(modules).map(([id, module]) => (
               <div className="child-modules" key={id}>
 
                 <ChildModule module={module} onChange={handleChildModuleUpdate} />
