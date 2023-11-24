@@ -76,7 +76,7 @@ export default function ModuleCard({ module, onChange }) {
   return (
     <div className="module-cards-container">
       <div className="card">
-
+        
         <input
           type="text"
           name="name"

@@ -130,7 +130,7 @@ export default function ChildModule({ module, onChange }) {
                 {
                     Object.keys(children).length === 0
                         ?
-                        <p>Empty</p>
+                        null
                         // Render this if `children` is empty
                         : Object.entries(children).map(([id, module]) => (
                             <div className="child-modules" key={id}>

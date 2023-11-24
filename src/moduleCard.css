@@ -1,18 +1,17 @@
 .module-cards-container{
    
    display: flex;
+   border-bottom: 10px solid black;
 }
 
-.n-child-container{
-    margin: 0 20px;
-}
+
 .child-module-container{
-    background-color: crimson;
+    
     width: 90%;
     height: 90%;
     display: flex;
     gap:20px;
-   
+    
     overflow-x: scroll;
 }
 
@@ -20,11 +19,6 @@
     display: none;
     width: auto;
     height: auto;
-}
-
-.child-modules{
-    background-color: blue;
-    margin: 0 20px;
 }
 
 .child-card{
@@ -36,5 +30,5 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 300px;
+    width: 400px;
   }
