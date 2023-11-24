@@ -27,7 +27,8 @@ export default function ChildModule({ module, onChange }) {
             childModules[id] = new Module(id);
         }
         setChildren(childModules);
-        
+        localModuleState.modules =childModules;
+        onChange(module.id, localModuleState)
     }
 
     // This function will be called for every input change and updates the local state
