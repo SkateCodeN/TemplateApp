@@ -8,11 +8,12 @@ export default function ModuleCard({ module, onChange }) {
 
   const [updatedModule, setUpdatedModule] = useState({ ...module });
 
-  const [modules, setModules] = useState(new Map());
+  const [modules, setModules] = useState({});
   const [moduleCount, setModuleCount] = useState(0);
 
 
   useEffect(() => {
+    
     onChange(updatedModule);
   }, [updatedModule])
 
@@ -46,7 +47,8 @@ export default function ModuleCard({ module, onChange }) {
       childModules[id] = new Module(id);
     }
     setModules(childModules);
-
+    updatedModule.modules =childModules;
+    onChange(updatedModule)
   }
 
 

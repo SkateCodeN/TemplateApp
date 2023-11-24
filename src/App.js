@@ -44,6 +44,7 @@ function App() {
     setTemplate(updatedTemplate);
 
   };
+
   return (
 
     <div className="App">
