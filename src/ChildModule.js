@@ -1,14 +1,34 @@
 import React, { useState, useEffect } from "react";
 import './moduleCard.css';
+import Module from "./Modules";
+import { v4 as uuidv4 } from 'uuid';
 
 export default function ChildModule({ module, onChange }) {
     // Create a single state object that contains all properties
     const [localModuleState, setLocalModuleState] = useState({ ...module });
-
+    const [moduleCount, setModuleCount] = useState(0);
+    const [children, setChildren] = useState({});
     // This effect will update the parent component whenever the local state changes
     useEffect(() => {
         onChange(module.id, localModuleState);
     }, [localModuleState]);
+
+    useEffect(() => {
+        createChildModules()
+
+    }, [moduleCount]);
+
+    const createChildModules = () => {
+
+        const childModules = {};
+        for (let i = 0; i < moduleCount; i++) {
+            const id = uuidv4();
+
+            childModules[id] = new Module(id);
+        }
+        setChildren(childModules);
+        
+    }
 
     // This function will be called for every input change and updates the local state
     const handleInputChange = (e) => {
@@ -16,14 +36,32 @@ export default function ChildModule({ module, onChange }) {
         // Update the local state with the new value for the input field
         setLocalModuleState(prevState => {
             if (prevState[name] === value) {
-            // Value is the same, no need to update the state and re-trigger the effect
-            return prevState;
-        }
-        // Value has changed, update the state
-        const updatedState = { ...prevState, [name]: value };
-        return updatedState;});
+                // Value is the same, no need to update the state and re-trigger the effect
+                return prevState;
+            }
+            // Value has changed, update the state
+            const updatedState = { ...prevState, [name]: value };
+            return updatedState;
+        });
     };
+    const handleModuleChange = (e) => {
+        const updatedModules = e.target.value;
+        setModuleCount(updatedModules);
 
+
+    };
+    const handleChildModuleUpdate = (childModuleId, childModuleData) => {
+
+        setLocalModuleState(prevModule => ({
+          ...prevModule,
+          modules: {
+            ...prevModule.modules,
+            [childModuleId]: childModuleData
+          }
+    
+        }));
+        onChange(localModuleState);
+      };
     return (
         <div className="n-child-container">
             <div className="child-card">
@@ -54,7 +92,13 @@ export default function ChildModule({ module, onChange }) {
                     onChange={handleInputChange}
                     placeholder="Order"
                 />
-
+                <input
+                    type="text"
+                    name="moduleCount"
+                    value={moduleCount|| ""}
+                    onChange={handleModuleChange}
+                    placeholder="Module Count"
+                />
                 <input
                     type="text"
                     name="properties"
@@ -81,12 +125,24 @@ export default function ChildModule({ module, onChange }) {
                 </div>
             </div>
 
-            <div>
-                <p>This is n-childs</p>
+            <div style={{display:"flex"}}>
+                {
+                    Object.keys(children).length === 0
+                        ?
+                        <p>Empty</p>
+                        // Render this if `children` is empty
+                        : Object.entries(children).map(([id, module]) => (
+                            <div className="child-modules" key={id}>
+
+                                <ChildModule module={module} onChange={handleChildModuleUpdate} />
+                            </div>
+                        )
+                    )
+                }
             </div>
         </div>
 
-       
+
 
     );
 }
