@@ -63,7 +63,9 @@ function App() {
         <h4>Modules:</h4>
         {
           Object.keys(modules).length === 0
-            ? <p>No modules to display.</p> // Render this if `modules` is empty
+            ? 
+            null
+
             : Object.entries(modules).map(([id, module]) => (
               <div key={id}>
 

@@ -1,13 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import './moduleCard.css';
 import Module from "./Modules";
 import { v4 as uuidv4 } from 'uuid';
+import getRandomColor from "./RandomColorGen";
 
-export default function ChildModule({ module, onChange }) {
+export default function ChildModule({parentID, module, onChange }) {
     // Create a single state object that contains all properties
     const [localModuleState, setLocalModuleState] = useState({ ...module });
     const [moduleCount, setModuleCount] = useState(0);
     const [children, setChildren] = useState({});
+    const cardRef = useRef(null);
+    
+    const modID = module.id;
+    //console.log(`card id: ${module.id}, color: ${cardColor}`);
+
+  
     // This effect will update the parent component whenever the local state changes
     useEffect(() => {
         onChange(module.id, localModuleState);
@@ -18,6 +25,13 @@ export default function ChildModule({ module, onChange }) {
 
     }, [moduleCount]);
 
+    useEffect(() => {
+        const cardColor = getRandomColor();
+        if (cardRef.current) {
+            cardRef.current.style.setProperty('--dynamic-color', cardColor);
+        }
+    }, []); // This will run every time cardColor changes
+
     const createChildModules = () => {
 
         const childModules = {};
@@ -27,9 +41,10 @@ export default function ChildModule({ module, onChange }) {
             childModules[id] = new Module(id);
         }
         setChildren(childModules);
-        localModuleState.modules =childModules;
+        localModuleState.modules = childModules;
         onChange(module.id, localModuleState)
     }
+
 
     // This function will be called for every input change and updates the local state
     const handleInputChange = (e) => {
@@ -54,18 +69,18 @@ export default function ChildModule({ module, onChange }) {
     const handleChildModuleUpdate = (childModuleId, childModuleData) => {
 
         setLocalModuleState(prevModule => ({
-          ...prevModule,
-          modules: {
-            ...prevModule.modules,
-            [childModuleId]: childModuleData
-          }
-    
+            ...prevModule,
+            modules: {
+                ...prevModule.modules,
+                [childModuleId]: childModuleData
+            }
+
         }));
         onChange(localModuleState);
-      };
+    };
     return (
         <div className="n-child-container">
-            <div className="child-card">
+            <div ref={cardRef} className="child-card">
                 <input
                     type="text"
                     name="name"
@@ -96,7 +111,7 @@ export default function ChildModule({ module, onChange }) {
                 <input
                     type="text"
                     name="moduleCount"
-                    value={moduleCount|| ""}
+                    value={moduleCount || ""}
                     onChange={handleModuleChange}
                     placeholder="Module Count"
                 />
@@ -122,20 +137,21 @@ export default function ChildModule({ module, onChange }) {
                     placeholder="Value"
                 />
                 <div>
+                    <p>Parent ID: {parentID}</p>
                     <p>uuid: {module.id}</p>
                 </div>
             </div>
 
-            <div style={{display:"flex"}}>
+            <div style={{ display: "flex" }}>
                 {
                     Object.keys(children).length === 0
                         ?
                         null
                         // Render this if `children` is empty
                         : Object.entries(children).map(([id, module]) => (
-                            <div className="child-modules" key={id}>
+                            <div  className="child-modules" key={id}>
 
-                                <ChildModule module={module} onChange={handleChildModuleUpdate} />
+                                <ChildModule parentID={modID} module={module} onChange={handleChildModuleUpdate} />
                             </div>
                         )
                     )

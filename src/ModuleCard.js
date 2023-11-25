@@ -5,19 +5,19 @@ import Module from "./Modules";
 import ChildModule from "./ChildModule";
 
 export default function ModuleCard({ module, onChange }) {
-
+  
   const [updatedModule, setUpdatedModule] = useState({ ...module });
-
   const [modules, setModules] = useState({});
   const [moduleCount, setModuleCount] = useState(0);
-
+  
+  const moduleID = module.id;
 
   useEffect(() => {
-    
+
     onChange(updatedModule);
   }, [updatedModule])
 
-
+  
   useEffect(() => {
     createChildModules()
 
@@ -36,7 +36,7 @@ export default function ModuleCard({ module, onChange }) {
     onChange(updatedModule);
   };
 
-  
+
   //whenerver our module count changes we create new child modules
   const createChildModules = () => {
 
@@ -47,7 +47,7 @@ export default function ModuleCard({ module, onChange }) {
       childModules[id] = new Module(id);
     }
     setModules(childModules);
-    updatedModule.modules =childModules;
+    updatedModule.modules = childModules;
     onChange(updatedModule)
   }
 
@@ -76,7 +76,7 @@ export default function ModuleCard({ module, onChange }) {
   return (
     <div className="module-cards-container">
       <div className="card">
-        
+
         <input
           type="text"
           name="name"
@@ -133,7 +133,7 @@ export default function ModuleCard({ module, onChange }) {
           placeholder="Value"
         />
         <div>
-          <p>uuid: {module.id}</p>
+          <p>uuid: {moduleID}</p>
         </div>
       </div>
 
@@ -141,12 +141,12 @@ export default function ModuleCard({ module, onChange }) {
         {
           Object.keys(modules).length === 0
             ?
-            <p>Empty</p>
+            null
             // Render this if `modules` is empty
             : Object.entries(modules).map(([id, module]) => (
-              <div className="child-modules" key={id}>
+              <div  className="child-modules" key={id}>
 
-                <ChildModule module={module} onChange={handleChildModuleUpdate} />
+                <ChildModule parentID={moduleID} module={module} onChange={handleChildModuleUpdate} />
               </div>
             ))
         }

@@ -11,7 +11,6 @@
     height: 90%;
     display: flex;
     gap:20px;
-    
     overflow-x: scroll;
 }
 
@@ -22,7 +21,8 @@
 }
 
 .child-card{
-    background-color: rgb(117, 35, 106);
+    /* background-color: rgb(117, 35, 106); */
+    background-color: var(--dynamic-color, #ffffff);
     padding: 20px;
     margin: 20px 20px;
     border-radius: 10px;
@@ -31,4 +31,4 @@
     flex-direction: column;
     justify-content: space-between;
     width: 400px;
-  }
+}
