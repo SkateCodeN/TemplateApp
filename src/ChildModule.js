@@ -10,7 +10,7 @@ export default function ChildModule({parentID, module, onChange }) {
     const [moduleCount, setModuleCount] = useState(0);
     const [children, setChildren] = useState({});
     const cardRef = useRef(null);
-    
+    const [parentColor, setParentColor] = useState("")
     const modID = module.id;
     //console.log(`card id: ${module.id}, color: ${cardColor}`);
 
@@ -27,9 +27,12 @@ export default function ChildModule({parentID, module, onChange }) {
 
     useEffect(() => {
         const cardColor = getRandomColor();
+        /*
         if (cardRef.current) {
             cardRef.current.style.setProperty('--dynamic-color', cardColor);
         }
+        */
+        setParentColor(cardColor);
     }, []); // This will run every time cardColor changes
 
     const createChildModules = () => {
@@ -78,9 +81,11 @@ export default function ChildModule({parentID, module, onChange }) {
         }));
         onChange(localModuleState);
     };
+
+    const childModuleStyle = { backgroundColor: parentColor};
     return (
         <div className="n-child-container">
-            <div ref={cardRef} className="child-card">
+            <div  className="child-card" style={childModuleStyle}>
                 <input
                     type="text"
                     name="name"
