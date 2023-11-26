@@ -4,14 +4,15 @@ import { v4 as uuidv4 } from 'uuid';
 import Module from "./Modules";
 import ChildModule from "./ChildModule";
 
+
 export default function ModuleCard({ module, onChange }) {
   
   const [updatedModule, setUpdatedModule] = useState({ ...module });
   const [modules, setModules] = useState({});
   const [moduleCount, setModuleCount] = useState(0);
-  
-  const moduleID = module.id;
 
+  const moduleID = module.id;
+  const modifiedID = moduleID.slice(-5);
   useEffect(() => {
 
     onChange(updatedModule);
@@ -133,7 +134,7 @@ export default function ModuleCard({ module, onChange }) {
           placeholder="Value"
         />
         <div>
-          <p>uuid: {moduleID}</p>
+          <p>id: {modifiedID}</p>
         </div>
       </div>
 

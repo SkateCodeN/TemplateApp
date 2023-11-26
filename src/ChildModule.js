@@ -12,6 +12,7 @@ export default function ChildModule({parentID, module, onChange }) {
     const cardRef = useRef(null);
     const [parentColor, setParentColor] = useState("")
     const modID = module.id;
+    const modifiedID = modID.slice(-5);
     //console.log(`card id: ${module.id}, color: ${cardColor}`);
 
   
@@ -142,8 +143,8 @@ export default function ChildModule({parentID, module, onChange }) {
                     placeholder="Value"
                 />
                 <div>
-                    <p>Parent ID: {parentID}</p>
-                    <p>uuid: {module.id}</p>
+                    <p>Parent ID: {parentID.slice(-5)}</p>
+                    <p>id: {modifiedID}</p>
                 </div>
             </div>
 
