@@ -3,16 +3,16 @@ import './moduleCard.css';
 import { v4 as uuidv4 } from 'uuid';
 import Module from "./Modules";
 import ChildModule from "./ChildModule";
-
+import getRandomColor from "./RandomColorGen";
 
 export default function ModuleCard({ module, onChange }) {
   
   const [updatedModule, setUpdatedModule] = useState({ ...module });
   const [modules, setModules] = useState({});
   const [moduleCount, setModuleCount] = useState(0);
-
   const moduleID = module.id;
   const modifiedID = moduleID.slice(-5);
+  const [moduleColors,setModuleColors] = useState({});
   useEffect(() => {
 
     onChange(updatedModule);
@@ -41,15 +41,17 @@ export default function ModuleCard({ module, onChange }) {
   //whenerver our module count changes we create new child modules
   const createChildModules = () => {
 
-    const childModules = new Map();
+    const childModules = {};
+    const colorObj={};
     for (let i = 0; i < moduleCount; i++) {
       const id = uuidv4();
-
       childModules[id] = new Module(id);
+      colorObj[id] = getRandomColor();
     }
     setModules(childModules);
     updatedModule.modules = childModules;
-    onChange(updatedModule)
+    onChange(updatedModule);
+    setModuleColors(colorObj);
   }
 
 
@@ -147,7 +149,7 @@ export default function ModuleCard({ module, onChange }) {
             : Object.entries(modules).map(([id, module]) => (
               <div  className="child-modules" key={id}>
 
-                <ChildModule parentID={moduleID} module={module} onChange={handleChildModuleUpdate} />
+                <ChildModule pColor={moduleColors[id]} parentID={moduleID} module={module} onChange={handleChildModuleUpdate} />
               </div>
             ))
         }

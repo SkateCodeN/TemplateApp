@@ -1,19 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect} from "react";
 import './moduleCard.css';
 import Module from "./Modules";
 import { v4 as uuidv4 } from 'uuid';
-import getRandomColor from "./RandomColorGen";
 
-export default function ChildModule({parentID, module, onChange }) {
+export default function ChildModule({pColor,parentID, module, onChange }) {
     // Create a single state object that contains all properties
     const [localModuleState, setLocalModuleState] = useState({ ...module });
     const [moduleCount, setModuleCount] = useState(0);
     const [children, setChildren] = useState({});
-    const cardRef = useRef(null);
+    
     const [parentColor, setParentColor] = useState("")
     const modID = module.id;
     const modifiedID = modID.slice(-5);
-    //console.log(`card id: ${module.id}, color: ${cardColor}`);
+    
 
   
     // This effect will update the parent component whenever the local state changes
@@ -27,13 +26,8 @@ export default function ChildModule({parentID, module, onChange }) {
     }, [moduleCount]);
 
     useEffect(() => {
-        const cardColor = getRandomColor();
-        /*
-        if (cardRef.current) {
-            cardRef.current.style.setProperty('--dynamic-color', cardColor);
-        }
-        */
-        setParentColor(cardColor);
+        
+        setParentColor(pColor);
     }, []); // This will run every time cardColor changes
 
     const createChildModules = () => {
@@ -145,6 +139,7 @@ export default function ChildModule({parentID, module, onChange }) {
                 <div>
                     <p>Parent ID: {parentID.slice(-5)}</p>
                     <p>id: {modifiedID}</p>
+                    <p>Color:{pColor}</p>
                 </div>
             </div>
 
@@ -157,7 +152,7 @@ export default function ChildModule({parentID, module, onChange }) {
                         : Object.entries(children).map(([id, module]) => (
                             <div  className="child-modules" key={id}>
 
-                                <ChildModule parentID={modID} module={module} onChange={handleChildModuleUpdate} />
+                                <ChildModule pColor={parentColor} parentID={modID} module={module} onChange={handleChildModuleUpdate} />
                             </div>
                         )
                     )
