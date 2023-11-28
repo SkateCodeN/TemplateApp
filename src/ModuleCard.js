@@ -71,6 +71,13 @@ export default function ModuleCard({ module, onChange }) {
         return prevState;
       }
       // Value has changed, update the state
+      if(name === "order")
+            {
+                const newVal = Number(value);
+                console.log(`value for ${name}: ${newVal}`)
+                const newState = {...prevState,[name]:newVal}
+                return newState;
+            }
       const updatedState = { ...prevState, [name]: value };
       return updatedState;
     });

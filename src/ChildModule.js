@@ -46,6 +46,7 @@ export default function ChildModule({pColor,parentID, module, onChange }) {
 
 
     // This function will be called for every input change and updates the local state
+    
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         // Update the local state with the new value for the input field
@@ -55,10 +56,17 @@ export default function ChildModule({pColor,parentID, module, onChange }) {
                 return prevState;
             }
             // Value has changed, update the state
+            if(name === "order")
+            {
+                const newVal = Number(value);
+                console.log(`value for ${name}: ${newVal}`)
+                const newState = {...prevState,[name]:newVal}
+                return newState;
+            }
             const updatedState = { ...prevState, [name]: value };
             return updatedState;
         });
-    };
+    }; 
     const handleModuleChange = (e) => {
         const updatedModules = e.target.value;
         setModuleCount(updatedModules);

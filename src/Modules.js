@@ -1,4 +1,4 @@
-export default function Modules(id, name= "", description="",type ="", order="", modules ={}, properties = {}, showInList=false, value=""){
+export default function Modules(id, name= "", description="",type ="", order=0, modules ={}, properties = {}, showInList=false, value=""){
     const module = {
         id:id,
         name: name,
