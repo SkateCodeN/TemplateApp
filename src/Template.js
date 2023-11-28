@@ -3,7 +3,7 @@ import { useState,useEffect } from "react";
 import { v4 as uuidv4 } from 'uuid';
 
 
-export default function Template({createModules}){
+export default function Template({createModules,copy,copySuccess}){
   const [moduleCount, setModuleCount] = useState(0);
   const [name,setName] = useState("");
   const[description,setDescription] = useState("");
@@ -22,15 +22,8 @@ export default function Template({createModules}){
     createModules(updatedTemplate);
   },[name,description,moduleCount]);
 
-  const handleClick = () => 
-  {
-    
-    console.log(`current Data: name: ${name}, 
-      description: ${description}, 
-      module count: ${moduleCount}`);
-
-    //createModules(template);
-  };
+  
+  
 
   return (
     <div style={{display:"flex", flexDirection:"column", width:"60%", margin:"20px 0"}}>
@@ -51,7 +44,8 @@ export default function Template({createModules}){
         placeholder="Module Number" 
       />
 
-      <button type="button" onClick={handleClick}>Create/Save</button>
+      <button type="button" onClick={copy}>Copy</button>
+      {copySuccess && <div>{copySuccess}</div>}
     </div>
   );
 }

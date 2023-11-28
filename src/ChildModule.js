@@ -2,6 +2,7 @@ import React, { useState, useEffect} from "react";
 import './moduleCard.css';
 import Module from "./Modules";
 import { v4 as uuidv4 } from 'uuid';
+import { getLightness } from "./adjustShade";
 
 export default function ChildModule({pColor,parentID, module, onChange }) {
     // Create a single state object that contains all properties
@@ -140,6 +141,7 @@ export default function ChildModule({pColor,parentID, module, onChange }) {
                     <p>Parent ID: {parentID.slice(-5)}</p>
                     <p>id: {modifiedID}</p>
                     <p>Color:{pColor}</p>
+                    <p>getLightness:{getLightness(pColor)}</p>
                 </div>
             </div>
 

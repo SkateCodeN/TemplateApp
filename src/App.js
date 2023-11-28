@@ -1,6 +1,6 @@
 
 import './App.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Template from './Template';
 import Module from './Modules';
 import JSONView from "./JSONView";
@@ -10,9 +10,22 @@ import { v4 as uuidv4 } from 'uuid';
 function App() {
   const [modules, setModules] = useState({});
   const [template, setTemplate] = useState({});
-
-
+  const [copySuccess, setCopySuccess] = useState('');
+  const copyTemplateToClipboard = async () => {
+    try {
+      // Stringify the template object to make it ready for copying
+      const templateStr = JSON.stringify(template, null, 2);
+      await navigator.clipboard.writeText(templateStr);
+      setCopySuccess('Template copied to clipboard!');
+    } catch (err) {
+      setCopySuccess('Failed to copy template.');
+      console.error('Failed to copy text to clipboard: ', err);
+    }
+  };
   //Lifted function that will be sent to 
+  useEffect (() =>{
+    setCopySuccess("");
+  },[template])
   const createModules = (mainTemplate) => {
 
     const { moduleCount } = mainTemplate;
@@ -28,7 +41,7 @@ function App() {
     mainTemplate.modules = childModules;
 
     setTemplate(mainTemplate);
-
+    
   }
 
   const handleModuleUpdate = (updatedModule) => {
@@ -53,7 +66,7 @@ function App() {
 
         <div className="card">
           <h4>Template:</h4>
-          <Template createModules={createModules} />
+          <Template createModules={createModules} copy={copyTemplateToClipboard} copySuccess={copySuccess}/>
         </div>
 
         <JSONView template={template} />
