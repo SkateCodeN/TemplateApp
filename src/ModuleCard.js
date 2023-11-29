@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Module from "./Modules";
 import ChildModule from "./ChildModule";
 import getRandomColor from "./RandomColorGen";
+import  Properties  from "./Properties";
 
 export default function ModuleCard({ module, onChange }) {
   
@@ -13,6 +14,8 @@ export default function ModuleCard({ module, onChange }) {
   const moduleID = module.id;
   const modifiedID = moduleID.slice(-5);
   const [moduleColors,setModuleColors] = useState({});
+  const [properties, setProperties] = useState({});
+
   useEffect(() => {
 
     onChange(updatedModule);
@@ -37,6 +40,12 @@ export default function ModuleCard({ module, onChange }) {
     onChange(updatedModule);
   };
 
+  const handlePropsUpdate =(newProps) => {
+    setProperties(newProps);
+    const updatedProps = {...updatedModule, properties: newProps}
+    setUpdatedModule(updatedProps);
+    onChange(updatedModule);
+  };
 
   //whenerver our module count changes we create new child modules
   const createChildModules = () => {
@@ -54,7 +63,7 @@ export default function ModuleCard({ module, onChange }) {
     setModuleColors(colorObj);
   }
 
-
+  //handles the user input of module count
   const handleModuleChange = (e) => {
     const updatedModules = e.target.value;
     setModuleCount(updatedModules);
@@ -62,6 +71,7 @@ export default function ModuleCard({ module, onChange }) {
 
   };
 
+  //pragmatically handles all the inputs rendered on Module Card
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     // Update the local state with the new value for the input field
@@ -86,6 +96,10 @@ export default function ModuleCard({ module, onChange }) {
   return (
     <div className="module-cards-container">
       <div className="card">
+        <div className="module-id">
+          <p>Module</p>
+          <p>ID: {modifiedID}</p>
+        </div>
 
         <input
           type="text"
@@ -121,13 +135,7 @@ export default function ModuleCard({ module, onChange }) {
           onChange={handleModuleChange}
           placeholder="Module Count"
         />
-        <input
-          type="text"
-          name="properties"
-          value={updatedModule.properties || ""}
-          onChange={handleInputChange}
-          placeholder="Properties"
-        />
+        
         <input
           type="text"
           name="showInList"
@@ -142,9 +150,9 @@ export default function ModuleCard({ module, onChange }) {
           onChange={handleInputChange}
           placeholder="Value"
         />
-        <div>
-          <p>id: {modifiedID}</p>
-        </div>
+  
+        <Properties handlePropsUpdate={handlePropsUpdate} />
+        
       </div>
 
       <div className="child-module-container">

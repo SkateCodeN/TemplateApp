@@ -20,6 +20,10 @@
     height: auto;
 }
 
+.module-id{
+    display: flex;
+    justify-content: space-between;
+}
 .child-card{
     /* background-color: rgb(117, 35, 106); */
     background-color: var(--dynamic-color, #ffffff);
