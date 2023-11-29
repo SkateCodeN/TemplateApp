@@ -1,7 +1,20 @@
 import React, { useState, useEffect } from "react";
 
 export default function Properties({ handlePropsUpdate }) {
-    const [updatedProps, setUpdatedProps] = useState({});
+    const [updatedProps, setUpdatedProps] = useState({
+        name: "",
+        className: "",
+        dateFormat: "MM dd, yyyy",
+        startDateName: "",
+        endDateName: "",
+        value: "",
+        suffix: "",
+        selectsStart: false,
+        selectsEnd: false,
+        showArrowAfter: false,
+        large: false,
+        defaultExpanded: false
+    });
 
     useEffect(() => {
 
@@ -26,7 +39,7 @@ export default function Properties({ handlePropsUpdate }) {
             return updatedState;
         });
     };
-    
+
     return (
         <div>
             <p>Properties:</p>
@@ -79,10 +92,11 @@ export default function Properties({ handlePropsUpdate }) {
                 onChange={handleInputChange}
                 placeholder="suffix"
             />
-            {/* SELECTS START Radio Button */}
-            <div style={{ display: "flex", alignItems: "baseline" }}>
-                <p>Selects Start:</p>
-                <div>
+            
+            <div style={{ display: "flex", gap: "20px" }}>
+
+                <div >
+                    <p>Selects Start:</p>
                     <input
                         type="radio"
                         value="true"
@@ -101,12 +115,9 @@ export default function Properties({ handlePropsUpdate }) {
                     />
                     <label>False</label>
                 </div>
-
-            </div>
-            {/* SELECTS END Radio Button */}
-            <div style={{ display: "flex", alignItems: "baseline" }}>
-                <p>Selects End:</p>
+                
                 <div>
+                    <p>Selects End:</p>
                     <input
                         type="radio"
                         value="true"
@@ -125,13 +136,16 @@ export default function Properties({ handlePropsUpdate }) {
                     />
                     <label>False</label>
                 </div>
-
+                
             </div>
+            <hr />
+            
 
             {/* SHOW ARROR AFTER Radio Button */}
-            <div style={{ display: "flex", alignItems: "baseline" }}>
-                <p>Show Arror After:</p>
+            <div style={{ display: "flex", gap: "20px" }}>
+                
                 <div>
+                <p>Show Arrow After:</p>
                     <input
                         type="radio"
                         value="true"
@@ -150,13 +164,8 @@ export default function Properties({ handlePropsUpdate }) {
                     />
                     <label>False</label>
                 </div>
-
-            </div>
-
-            {/* LARGE Radio Button */}
-            <div style={{ display: "flex", alignItems: "baseline" }}>
-                <p>Large:</p>
                 <div>
+                    <p>Large:</p>
                     <input
                         type="radio"
                         value="true"
@@ -175,6 +184,13 @@ export default function Properties({ handlePropsUpdate }) {
                     />
                     <label>False</label>
                 </div>
+
+            </div>
+            <hr />
+            {/* LARGE Radio Button */}
+            <div style={{ display: "flex", alignItems: "baseline" }}>
+               
+                
 
             </div>
 

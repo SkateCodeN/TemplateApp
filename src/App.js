@@ -11,6 +11,7 @@ function App() {
   const [modules, setModules] = useState({});
   const [template, setTemplate] = useState({});
   const [copySuccess, setCopySuccess] = useState('');
+
   const copyTemplateToClipboard = async () => {
     try {
       // Stringify the template object to make it ready for copying
@@ -26,9 +27,10 @@ function App() {
   useEffect (() =>{
     setCopySuccess("");
   },[template])
-  const createModules = (mainTemplate) => {
 
-    const { moduleCount } = mainTemplate;
+  const createModules = (mainTemplate, moduleCount) => {
+
+    
     const childModules = {};
     for (let i = 0; i < moduleCount; i++) {
       const id = uuidv4();
@@ -62,7 +64,7 @@ function App() {
 
     <div className="App">
 
-      <div style={{ width: "100vw", display: "flex", gap: "20px," }}>
+      <div style={{display: "flex", gap: "20px,"}}>
 
         <div className="card">
           <h4>Template:</h4>

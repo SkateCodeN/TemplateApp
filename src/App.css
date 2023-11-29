@@ -10,7 +10,9 @@
   max-height: 700px;
 }
 
-
+.App{
+  width: 100vw;
+}
 
 .viewCard {
   background-color: gold;
@@ -33,4 +35,5 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  
 }

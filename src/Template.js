@@ -15,11 +15,10 @@ export default function Template({createModules,copy,copySuccess}){
     const updatedTemplate = {
       id:uuidv4(),
       name:name,
-      description: description,
-      moduleCount:moduleCount
+      description: description
     }
     //setTemplate(updatedTemplate);
-    createModules(updatedTemplate);
+    createModules(updatedTemplate,moduleCount);
   },[name,description,moduleCount]);
 
   
