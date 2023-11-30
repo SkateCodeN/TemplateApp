@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import './moduleCard.css';
 import Module from "./Modules";
 import { v4 as uuidv4 } from 'uuid';
-
+import Properties from "./Properties";
 
 export default function ChildModule({ pColor, parentID, module, onChange }) {
     // Create a single state object that contains all properties
     const [localModuleState, setLocalModuleState] = useState({ ...module });
     const [moduleCount, setModuleCount] = useState(0);
     const [children, setChildren] = useState({});
-
+    const [properties, setProperties] = useState({});
     const [parentColor, setParentColor] = useState("")
     const modID = module.id;
     const modifiedID = modID.slice(-5);
@@ -44,7 +44,13 @@ export default function ChildModule({ pColor, parentID, module, onChange }) {
         onChange(module.id, localModuleState)
     }
 
-
+    //Handles the state change of Properties component
+    const handlePropsUpdate = (newProps) => {
+        setProperties(newProps);
+        const updatedProps = { ...localModuleState, properties: newProps }
+        setLocalModuleState(updatedProps);
+        onChange(localModuleState);
+    };
     // This function will be called for every input change and updates the local state
 
     const handleInputChange = (e) => {
@@ -130,13 +136,7 @@ export default function ChildModule({ pColor, parentID, module, onChange }) {
                     onChange={handleModuleChange}
                     placeholder="Module Count"
                 />
-                <input
-                    type="text"
-                    name="properties"
-                    value={localModuleState.properties || ""}
-                    onChange={handleInputChange}
-                    placeholder="Properties"
-                />
+                
                 <input
                     type="text"
                     name="showInList"
@@ -152,6 +152,7 @@ export default function ChildModule({ pColor, parentID, module, onChange }) {
                     placeholder="Value"
                 />
 
+                <Properties handlePropsUpdate={handlePropsUpdate} />
             </div>
 
             <div style={{ display: "flex" }}>

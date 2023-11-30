@@ -27,6 +27,7 @@ export default function ModuleCard({ module, onChange }) {
 
   }, [moduleCount]);
 
+  //handles the state of child modules component
   const handleChildModuleUpdate = (childModuleId, childModuleData) => {
 
     setUpdatedModule(prevModule => ({
@@ -40,6 +41,7 @@ export default function ModuleCard({ module, onChange }) {
     onChange(updatedModule);
   };
 
+  //Handles the state change of Properties component
   const handlePropsUpdate =(newProps) => {
     setProperties(newProps);
     const updatedProps = {...updatedModule, properties: newProps}
@@ -150,7 +152,7 @@ export default function ModuleCard({ module, onChange }) {
           onChange={handleInputChange}
           placeholder="Value"
         />
-  
+
         <Properties handlePropsUpdate={handlePropsUpdate} />
         
       </div>
