@@ -1,21 +1,21 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import './moduleCard.css';
 import Module from "./Modules";
 import { v4 as uuidv4 } from 'uuid';
 
 
-export default function ChildModule({pColor,parentID, module, onChange }) {
+export default function ChildModule({ pColor, parentID, module, onChange }) {
     // Create a single state object that contains all properties
     const [localModuleState, setLocalModuleState] = useState({ ...module });
     const [moduleCount, setModuleCount] = useState(0);
     const [children, setChildren] = useState({});
-    
+
     const [parentColor, setParentColor] = useState("")
     const modID = module.id;
     const modifiedID = modID.slice(-5);
-    
 
-  
+
+
     // This effect will update the parent component whenever the local state changes
     useEffect(() => {
         onChange(module.id, localModuleState);
@@ -27,7 +27,7 @@ export default function ChildModule({pColor,parentID, module, onChange }) {
     }, [moduleCount]);
 
     useEffect(() => {
-        
+
         setParentColor(pColor);
     }, []); // This will run every time cardColor changes
 
@@ -46,7 +46,7 @@ export default function ChildModule({pColor,parentID, module, onChange }) {
 
 
     // This function will be called for every input change and updates the local state
-    
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         // Update the local state with the new value for the input field
@@ -56,17 +56,16 @@ export default function ChildModule({pColor,parentID, module, onChange }) {
                 return prevState;
             }
             // Value has changed, update the state
-            if(name === "order")
-            {
+            if (name === "order") {
                 const newVal = Number(value);
                 console.log(`value for ${name}: ${newVal}`)
-                const newState = {...prevState,[name]:newVal}
+                const newState = { ...prevState, [name]: newVal }
                 return newState;
             }
             const updatedState = { ...prevState, [name]: value };
             return updatedState;
         });
-    }; 
+    };
     const handleModuleChange = (e) => {
         const updatedModules = e.target.value;
         setModuleCount(updatedModules);
@@ -86,11 +85,17 @@ export default function ChildModule({pColor,parentID, module, onChange }) {
         onChange(localModuleState);
     };
 
-    const childModuleStyle = { backgroundColor: parentColor};
+    const childModuleStyle = { backgroundColor: parentColor };
 
     return (
         <div className="n-child-container">
-            <div  className="child-card" style={childModuleStyle}>
+
+            <div className="child-card" style={childModuleStyle}>
+                <div className="module-id">
+                    <p>Parent ID: {parentID.slice(-5)}</p>
+                    <p>Child ID: {modifiedID}</p>
+
+                </div>
                 <input
                     type="text"
                     name="name"
@@ -146,11 +151,7 @@ export default function ChildModule({pColor,parentID, module, onChange }) {
                     onChange={handleInputChange}
                     placeholder="Value"
                 />
-                <div>
-                    <p>Parent ID: {parentID.slice(-5)}</p>
-                    <p>id: {modifiedID}</p>
-                    
-                </div>
+
             </div>
 
             <div style={{ display: "flex" }}>
@@ -160,12 +161,12 @@ export default function ChildModule({pColor,parentID, module, onChange }) {
                         null
                         // Render this if `children` is empty
                         : Object.entries(children).map(([id, module]) => (
-                            <div  className="child-modules" key={id}>
+                            <div className="child-modules" key={id}>
 
                                 <ChildModule pColor={parentColor} parentID={modID} module={module} onChange={handleChildModuleUpdate} />
                             </div>
                         )
-                    )
+                        )
                 }
             </div>
         </div>
