@@ -25,3 +25,6 @@ yarn-error.log*
 backup
 adjustShade.js
 DateFormatSelector.js
+
+
+LargerToggleSwitch.css

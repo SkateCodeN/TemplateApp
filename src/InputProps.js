@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
+import ToggleSwitch from "./ToggleSwitch";
 
-export default function InputProps({handleInputPropsUpdate}) {
+export default function InputProps({ handleInputPropsUpdate }) {
     const [updatedProps, setUpdatedProps] = useState({
         name: "",
-        required:false,
-        placeholder:""
+        required: false,
+        placeholder: ""
     });
 
     useEffect(() => {
@@ -22,8 +23,12 @@ export default function InputProps({handleInputPropsUpdate}) {
                 return prevState;
             }
 
-            if (type === "radio") {
-                finalValue = value === 'true';
+            if (type === "checkbox") {
+                switch (name) {
+                    case ("required"):
+                        finalValue = !updatedProps.required;
+                        break;
+                }
             }
             // Value has changed, update the state
             const updatedState = { ...prevState, [name]: finalValue };
@@ -37,24 +42,29 @@ export default function InputProps({handleInputPropsUpdate}) {
             <input
                 type="text"
                 name="name"
-                value={updatedProps.name ||""}
+                value={updatedProps.name || ""}
                 onChange={handleInputChange}
                 placeholder="Name"
             />
             <input
                 type="text"
-                name="required"
-                value={updatedProps.required ||""}
-                onChange={handleInputChange}
-                placeholder="Required"
-            />
-            <input
-                type="text"
                 name="placeHolder"
-                value={updatedProps.placeholder ||""}
+                value={updatedProps.placeholder || ""}
                 onChange={handleInputChange}
                 placeholder="Place Holder"
             />
+            <div className="radio-group">
+                <div className="radio-option">
+                    <p >Required:</p>
+                    <ToggleSwitch
+                        checkName={"required"}
+                        isOn={updatedProps.required}
+                        handleToggle={handleInputChange}
+                    />
+                </div>
+            </div>
+
+
         </div>
     );
 }

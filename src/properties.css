@@ -1,4 +1,35 @@
-.properties-toggle-button{
+.properties-toggle-button {
     height: 30px;
     align-self: center;
 }
+
+.input-field {
+    display: block;
+    
+    box-sizing: border-box;
+}
+
+.radio-group {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+  }
+
+  .radio-group p {
+    margin-right: 10px;
+    
+    max-width: 100px;
+  }
+  .radio-option {
+    display: flex;
+    margin-right: 10px;
+    align-items: center;
+    width: 50%;
+  }
+
+  .radio-div{
+    width: 50%;
+    background-color:bisque;
+  }
+
+  

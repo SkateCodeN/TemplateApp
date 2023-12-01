@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./properties.css";
 import InputProps from "./InputProps";
 import LabelProps from "./LabelProps";
+import ToggleSwitch from "./ToggleSwitch";
 export default function Properties({ handlePropsUpdate }) {
     const [updatedProps, setUpdatedProps] = useState({
         name: "",
@@ -18,8 +19,9 @@ export default function Properties({ handlePropsUpdate }) {
         defaultExpanded: false
     });
     const [isVisible, setIsVisible] = useState(false);
-    const [labelProps,setLabelProps] = useState({});
-    const [inputProps,setInputProps] = useState({});
+    const [labelProps, setLabelProps] = useState({});
+    const [inputProps, setInputProps] = useState({});
+    const [defaultExpandedState, setDefaultExpandedState] = useState(false);
     useEffect(() => {
 
         handlePropsUpdate(updatedProps);
@@ -30,19 +32,20 @@ export default function Properties({ handlePropsUpdate }) {
     };
 
     //Handle label props
-    const handleLabelPropsUpdate =(newProps) => {
+    const handleLabelPropsUpdate = (newProps) => {
         setLabelProps(newProps);
-        const updatedLabelProps = {...updatedProps, labelProps: newProps}
+        const updatedLabelProps = { ...updatedProps, labelProps: newProps }
         setUpdatedProps(updatedProps);
         handlePropsUpdate(updatedLabelProps);
     };
 
-    const handleInputPropsUpdate =(newProps) => {
+    const handleInputPropsUpdate = (newProps) => {
         setInputProps(newProps);
-        const updatedInputProps = {...updatedProps, inputProps: newProps}
+        const updatedInputProps = { ...updatedProps, inputProps: newProps }
         setUpdatedProps(updatedProps);
         handlePropsUpdate(updatedInputProps);
     };
+
     const handleInputChange = (e) => {
         const { name, value, type } = e.target;
         let finalValue = value;
@@ -52,9 +55,33 @@ export default function Properties({ handlePropsUpdate }) {
                 // Value is the same, no need to update the state and re-trigger the effect
                 return prevState;
             }
-
+            /*
             if (type === "radio") {
                 finalValue = value === 'true';
+            }
+            */
+            if(type ==="checkbox")
+            {
+                switch(name)
+                {
+                    case("defaultExpanded"):
+                        finalValue = !updatedProps.defaultExpanded;
+                    break;
+                    case("selectsEnd"):
+                        finalValue = !updatedProps.selectsEnd;
+                    break;
+                    case("showArrowAfter"):
+                        finalValue = !updatedProps.showArrowAfter;
+                    break;
+                    case("large"):
+                        finalValue = !updatedProps.large;
+                    break;
+                    case("selectsStart"):
+                        finalValue = !updatedProps.selectsStart;
+                    break;
+                    
+                }
+
             }
             // Value has changed, update the state
             const updatedState = { ...prevState, [name]: finalValue };
@@ -64,12 +91,12 @@ export default function Properties({ handlePropsUpdate }) {
 
     //Toggle display for properties 
     const propertiesStyle = {
-        display: isVisible ? 'block' : 'none' 
+        display: isVisible ? 'block' : 'none'
     };
 
     return (
         <div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{display: "flex", justifyContent: "space-between"}}>
                 <p>Properties:</p>
                 <button className="properties-toggle-button"
                     onClick={toggleVisibility}
@@ -81,6 +108,7 @@ export default function Properties({ handlePropsUpdate }) {
             <div style={propertiesStyle}>
                 <input
                     type="text"
+
                     name="name"
                     value={updatedProps.name || ""}
                     onChange={handleInputChange}
@@ -92,6 +120,7 @@ export default function Properties({ handlePropsUpdate }) {
                     value={updatedProps.className || ""}
                     onChange={handleInputChange}
                     placeholder="ClassName"
+
                 />
                 <input
                     type="text"
@@ -99,6 +128,7 @@ export default function Properties({ handlePropsUpdate }) {
                     value={updatedProps.dateFormat || ""}
                     onChange={handleInputChange}
                     placeholder="Date Format"
+
                 />
                 <input
                     type="text"
@@ -106,6 +136,7 @@ export default function Properties({ handlePropsUpdate }) {
                     value={updatedProps.startDateName || ""}
                     onChange={handleInputChange}
                     placeholder="Start Date Name"
+
                 />
                 <input
                     type="text"
@@ -113,6 +144,7 @@ export default function Properties({ handlePropsUpdate }) {
                     value={updatedProps.endDateName || ""}
                     onChange={handleInputChange}
                     placeholder="End Date Name"
+
                 />
                 <input
                     type="text"
@@ -120,137 +152,74 @@ export default function Properties({ handlePropsUpdate }) {
                     value={updatedProps.value || ""}
                     onChange={handleInputChange}
                     placeholder="Value"
+
                 />
                 <input
                     type="text"
                     name="suffix"
                     value={updatedProps.suffix || ""}
                     onChange={handleInputChange}
-                    placeholder="suffix"
+                    placeholder="Suffix"
+
                 />
+               
+                <div>
+                    <div className="radio-group">
+                        <div className="radio-option">
+                            <p >Show Arrow After:</p>
+                            <ToggleSwitch 
+                                checkName={"showArrowAfter"} 
+                                isOn={updatedProps.showArrowAfter} 
+                                handleToggle={handleInputChange}
+                                
+                            />
+                        </div>
 
-                <div style={{ display: "flex", gap: "20px" }}>
-
-                    <div >
-                        <p>Selects Start:</p>
-                        <input
-                            type="radio"
-                            value="true"
-                            name="selectsStart"
-                            checked={updatedProps.selectsStart === true}
-                            onChange={handleInputChange}
-
-                        />
-                        <label>True</label>
-                        <input
-                            type="radio"
-                            value="false"
-                            name="selectsStart"
-                            checked={updatedProps.selectsStart === false}
-                            onChange={handleInputChange}
-                        />
-                        <label>False</label>
+                        <div className="radio-option">
+                            <p>Large:</p>
+                            <ToggleSwitch 
+                                checkName={"large"} 
+                                isOn={updatedProps.large} 
+                                handleToggle={handleInputChange} 
+                                
+                            />
+                        </div>
+                        <div className="radio-option">
+                            <p>Selects Start:</p>
+                            <ToggleSwitch 
+                                checkName={"selectsStart"} 
+                                isOn={updatedProps.selectsStart} 
+                                handleToggle={handleInputChange} 
+                                
+                            />
+                        </div>
                     </div>
-
-                    <div>
-                        <p>Selects End:</p>
-                        <input
-                            type="radio"
-                            value="true"
-                            name="selectsEnd"
-                            checked={updatedProps.selectsEnd === true}
-                            onChange={handleInputChange}
-
-                        />
-                        <label>True</label>
-                        <input
-                            type="radio"
-                            value="false"
-                            name="selectsEnd"
-                            checked={updatedProps.selectsEnd === false}
-                            onChange={handleInputChange}
-                        />
-                        <label>False</label>
-                    </div>
-
                 </div>
                 <hr />
+                <div>
+                    <div className="radio-group">
+                        <div className="radio-option">
+                            <p >Default Expanded:</p>
+                            <ToggleSwitch 
+                                checkName={"defaultExpanded"} 
+                                isOn={updatedProps.defaultExpanded} 
+                                handleToggle={handleInputChange}
+                            />
+                        </div>
 
-
-                {/* SHOW ARROR AFTER Radio Button */}
-                <div style={{ display: "flex", gap: "20px" }}>
-
-                    <div>
-                        <p>Show Arrow After:</p>
-                        <input
-                            type="radio"
-                            value="true"
-                            name="showArrowAfter"
-                            checked={updatedProps.showArrowAfter === true}
-                            onChange={handleInputChange}
-
-                        />
-                        <label>True</label>
-                        <input
-                            type="radio"
-                            value="false"
-                            name="showArrowAfter"
-                            checked={updatedProps.showArrowAfter === false}
-                            onChange={handleInputChange}
-                        />
-                        <label>False</label>
+                        <div className="radio-option">
+                            <p>Selects End:</p>
+                            <ToggleSwitch 
+                                checkName={"selectsEnd"} 
+                                isOn={updatedProps.selectsEnd} 
+                                handleToggle={handleInputChange} 
+                            />
+                        </div>
                     </div>
-                    <div>
-                        <p>Large:</p>
-                        <input
-                            type="radio"
-                            value="true"
-                            name="large"
-                            checked={updatedProps.large === true}
-                            onChange={handleInputChange}
-
-                        />
-                        <label>True</label>
-                        <input
-                            type="radio"
-                            value="false"
-                            name="large"
-                            checked={updatedProps.large === false}
-                            onChange={handleInputChange}
-                        />
-                        <label>False</label>
-                    </div>
-
                 </div>
                 <hr />
-
-                {/* DEFAULT EXPANDED Radio Button */}
-                <div style={{ display: "flex", alignItems: "baseline" }}>
-                    <p>Default Expanded:</p>
-                    <div>
-                        <input
-                            type="radio"
-                            value="true"
-                            name="defaultExpanded"
-                            checked={updatedProps.defaultExpanded === true}
-                            onChange={handleInputChange}
-
-                        />
-                        <label>True</label>
-                        <input
-                            type="radio"
-                            value="false"
-                            name="defaultExpanded"
-                            checked={updatedProps.defaultExpanded === false}
-                            onChange={handleInputChange}
-                        />
-                        <label>False</label>
-                    </div>
-
-                </div>
-
                 {/* INPUT||LABEL PROPS */}
-                <div style={{ display: "flex" }}>
+                <div style={{ display: "flex", alignItems: "baseline" }}>
 
                     <InputProps handleInputPropsUpdate={handleInputPropsUpdate} />
 
