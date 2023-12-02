@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Module from "./Modules";
 import ChildModule from "./ChildModule";
 import getRandomColor from "./RandomColorGen";
-import  Properties  from "./Properties";
+import Properties  from "./Properties";
 
 export default function ModuleCard({ module, onChange }) {
   

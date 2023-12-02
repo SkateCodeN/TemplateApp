@@ -10,10 +10,16 @@
   max-height: 750px;
 }
 
-.App{
-  width: 100vw;
-}
 
+.spaceBackground{
+  color: white;
+  background-color: black;
+  width: 600px;
+}
+.card-container{
+  display: flex; 
+  
+}
 .viewCard {
   background-color: gold;
   padding: 20px;
@@ -37,3 +43,30 @@
   gap: 20px;
   
 }
+
+@keyframes spaceBackground {
+  0% {
+      background-position: 0% 50%;
+  }
+
+  50% {
+      background-position: 100% 50%;
+  }
+
+  100% {
+      background-position: 0% 50%;
+  }
+}
+
+.space-background {
+  animation: spaceBackground 30s ease infinite;
+  background: linear-gradient(-45deg, #6b0f1a, #b91372, #6b0f1a, #b91372, #f83600);
+  background-size: 400% 400%;
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+

@@ -26,5 +26,6 @@ backup
 adjustShade.js
 DateFormatSelector.js
 
-
+ModulePreview.js
+ModulePreview.css
 LargerToggleSwitch.css

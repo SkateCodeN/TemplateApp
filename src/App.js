@@ -11,7 +11,7 @@ function App() {
   const [modules, setModules] = useState({});
   const [template, setTemplate] = useState({});
   const [copySuccess, setCopySuccess] = useState('');
-
+  const modifiedID = (template.id) ? template.id.slice(-5) : "";
   const copyTemplateToClipboard = async () => {
     try {
       // Stringify the template object to make it ready for copying
@@ -64,11 +64,14 @@ function App() {
 
     <div className="App">
 
-      <div style={{display: "flex", gap: "20px,"}}>
-
-        <div className="card">
-          <h4>Template:</h4>
-          <Template createModules={createModules} copy={copyTemplateToClipboard} copySuccess={copySuccess}/>
+      <div className="card-container" >
+        <div className="spaceBackground" >
+          <Template id={modifiedID} 
+            createModules={createModules} 
+            copy={copyTemplateToClipboard} 
+            copySuccess={copySuccess}
+            childModules={modules}
+          />
         </div>
 
         <JSONView template={template} />
