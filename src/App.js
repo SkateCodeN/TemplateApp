@@ -12,6 +12,8 @@ function App() {
   const [template, setTemplate] = useState({});
   const [copySuccess, setCopySuccess] = useState('');
   const modifiedID = (template.id) ? template.id.slice(-5) : "";
+  const [viewModule, setViewModule] = useState(null);
+
   const copyTemplateToClipboard = async () => {
     try {
       // Stringify the template object to make it ready for copying
@@ -23,14 +25,17 @@ function App() {
       console.error('Failed to copy text to clipboard: ', err);
     }
   };
+
   //Lifted function that will be sent to 
-  useEffect (() =>{
+  useEffect(() => {
     setCopySuccess("");
-  },[template])
+  }, [template])
 
   const createModules = (mainTemplate, moduleCount) => {
 
-    
+    //if module count is 0, make sure to erase viewMod state
+    if(moduleCount === 0 ) setViewModule(null);
+
     const childModules = {};
     for (let i = 0; i < moduleCount; i++) {
       const id = uuidv4();
@@ -39,11 +44,13 @@ function App() {
     }
 
     setModules(childModules);
-
     mainTemplate.modules = childModules;
-
     setTemplate(mainTemplate);
-    
+
+  }
+  const handleViewModuleButton = (module) => {
+    console.log(`Module id${module.id} clicked`)
+    setViewModule(module);
   }
 
   const handleModuleUpdate = (updatedModule) => {
@@ -66,11 +73,12 @@ function App() {
 
       <div className="card-container" >
         <div className="spaceBackground" >
-          <Template id={modifiedID} 
-            createModules={createModules} 
-            copy={copyTemplateToClipboard} 
+          <Template id={modifiedID}
+            createModules={createModules}
+            copy={copyTemplateToClipboard}
             copySuccess={copySuccess}
             childModules={modules}
+            handleViewModuleButton={handleViewModuleButton}
           />
         </div>
 
@@ -81,7 +89,7 @@ function App() {
         <h4>Modules:</h4>
         {
           Object.keys(modules).length === 0
-            ? 
+            ?
             null
 
             : Object.entries(modules).map(([id, module]) => (
@@ -93,8 +101,14 @@ function App() {
         }
       </div>
 
-    </div>
+      <div className='modules-div'>
+        <p>Testing Preview</p>
+        {
+          viewModule && <ModuleCard module={viewModule} onChange={handleModuleUpdate} />
+        }
+      </div>
 
+    </div>
 
   );
 }

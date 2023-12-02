@@ -5,7 +5,7 @@ import './Template.css'
 import ModulePreview from "./ModulePreview";
 
 
-export default function Template({ createModules, copy, copySuccess, id,childModules }) {
+export default function Template({ createModules, copy, copySuccess, id,childModules,handleViewModuleButton }) {
   const [moduleCount, setModuleCount] = useState(0);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -49,7 +49,7 @@ export default function Template({ createModules, copy, copySuccess, id,childMod
         placeholder="Module Number"
       />
       
-      <ModulePreview childModules={childModules}/>
+      <ModulePreview childModules={childModules} handleViewModuleButton={handleViewModuleButton}/>
 
       <button className="copy-button" type="button" onClick={copy}>Copy</button>
       {copySuccess && <div className="copy-success" >{copySuccess}</div>}
