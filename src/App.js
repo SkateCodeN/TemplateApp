@@ -30,7 +30,6 @@ function App() {
 
   const createModules = (mainTemplate, moduleCount) => {
 
-    
     const childModules = {};
     for (let i = 0; i < moduleCount; i++) {
       const id = uuidv4();
@@ -39,9 +38,7 @@ function App() {
     }
 
     setModules(childModules);
-
     mainTemplate.modules = childModules;
-
     setTemplate(mainTemplate);
     
   }
@@ -94,8 +91,6 @@ function App() {
       </div>
 
     </div>
-
-
   );
 }
 
