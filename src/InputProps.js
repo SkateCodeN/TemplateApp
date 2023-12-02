@@ -12,7 +12,7 @@ export default function InputProps({ handleInputPropsUpdate }) {
 
         handleInputPropsUpdate(updatedProps);
     }, [updatedProps])
-
+    
     const handleInputChange = (e) => {
         const { name, value, type } = e.target;
         let finalValue = value;
@@ -27,7 +27,7 @@ export default function InputProps({ handleInputPropsUpdate }) {
                 switch (name) {
                     case ("required"):
                         finalValue = !updatedProps.required;
-                        break;
+                    break;
                 }
             }
             // Value has changed, update the state
@@ -35,7 +35,7 @@ export default function InputProps({ handleInputPropsUpdate }) {
             return updatedState;
         });
     };
-
+    
     return (
         <div>
             <p>Input Props:</p>

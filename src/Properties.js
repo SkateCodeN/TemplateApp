@@ -221,7 +221,10 @@ export default function Properties({ handlePropsUpdate }) {
                 {/* INPUT||LABEL PROPS */}
                 <div style={{ display: "flex", alignItems: "baseline" }}>
 
-                    <InputProps handleInputPropsUpdate={handleInputPropsUpdate} />
+                    <InputProps 
+                        handleInputPropsUpdate={handleInputPropsUpdate} 
+                       
+                    />
 
                     <LabelProps handleLabelPropsUpdate={handleLabelPropsUpdate} />
                 </div>
