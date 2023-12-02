@@ -2,10 +2,10 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import './Template.css'
-import ModulePreview from "./ModulePreview";
 
 
-export default function Template({ createModules, copy, copySuccess, id,childModules }) {
+
+export default function Template({ createModules, copy, copySuccess, id}) {
   const [moduleCount, setModuleCount] = useState(0);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -49,7 +49,6 @@ export default function Template({ createModules, copy, copySuccess, id,childMod
         placeholder="Module Number"
       />
       
-      <ModulePreview childModules={childModules}/>
 
       <button className="copy-button" type="button" onClick={copy}>Copy</button>
       {copySuccess && <div className="copy-success" >{copySuccess}</div>}

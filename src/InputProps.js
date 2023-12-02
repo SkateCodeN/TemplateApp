@@ -48,7 +48,7 @@ export default function InputProps({ handleInputPropsUpdate }) {
             />
             <input
                 type="text"
-                name="placeHolder"
+                name="placeholder"
                 value={updatedProps.placeholder || ""}
                 onChange={handleInputChange}
                 placeholder="Place Holder"
