@@ -9,7 +9,7 @@ export default function Template({ createModules, copy, copySuccess, id,childMod
   const [moduleCount, setModuleCount] = useState(0);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-
+  
 
   //each time we change the name, we re-render and update obj
   useEffect(() => {

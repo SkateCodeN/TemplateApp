@@ -8,6 +8,7 @@ import ModuleCard from "./ModuleCard";
 import { v4 as uuidv4 } from 'uuid';
 
 function App() {
+
   const [modules, setModules] = useState({});
   const [template, setTemplate] = useState({});
   const [copySuccess, setCopySuccess] = useState('');
@@ -26,20 +27,20 @@ function App() {
     }
   };
 
-  //Lifted function that will be sent to 
   useEffect(() => {
     setCopySuccess("");
+
   }, [template])
+
 
   const createModules = (mainTemplate, moduleCount) => {
 
     //if module count is 0, make sure to erase viewMod state
-    if(moduleCount === 0 ) setViewModule(null);
+    if (moduleCount === 0) setViewModule(null);
 
     const childModules = {};
     for (let i = 0; i < moduleCount; i++) {
       const id = uuidv4();
-
       childModules[id] = new Module(id);
     }
 
@@ -48,9 +49,9 @@ function App() {
     setTemplate(mainTemplate);
 
   }
-  const handleViewModuleButton = (module) => {
-    console.log(`Module id${module.id} clicked`)
-    setViewModule(module);
+  //This is the module we want to be displayed
+  const handleViewModuleButton = (module,id) => {
+    setViewModule(template.modules[id]);
   }
 
   const handleModuleUpdate = (updatedModule) => {
@@ -64,7 +65,6 @@ function App() {
     };
 
     setTemplate(updatedTemplate);
-
   };
 
   return (
@@ -85,26 +85,15 @@ function App() {
         <JSONView template={template} />
       </div>
 
-      <div className="modules-div">
-        <h4>Modules:</h4>
-        {
-          Object.keys(modules).length === 0
-            ?
-            null
-
-            : Object.entries(modules).map(([id, module]) => (
-              <div key={id}>
-
-                <ModuleCard module={module} onChange={handleModuleUpdate} />
-              </div>
-            ))
-        }
-      </div>
-
       <div className='modules-div'>
         <p>Testing Preview</p>
         {
-          viewModule && <ModuleCard module={viewModule} onChange={handleModuleUpdate} />
+          viewModule &&
+          <ModuleCard
+            module={viewModule}
+            onChange={handleModuleUpdate}
+
+          />
         }
       </div>
 

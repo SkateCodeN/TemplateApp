@@ -11,7 +11,7 @@ export default function ModulePreview({ childModules,handleViewModuleButton }) {
 
                     : Object.entries(childModules).map(([id, module]) => (
                         <button className="module-button-block" 
-                            onClick={() => handleViewModuleButton(module)}
+                            onClick={() => handleViewModuleButton(module,id)}
                             key={id}
                         >
                             ID: {id.slice(-5)}

@@ -4,16 +4,16 @@ import { v4 as uuidv4 } from 'uuid';
 import Module from "./Modules";
 import ChildModule from "./ChildModule";
 import getRandomColor from "./RandomColorGen";
-import Properties  from "./Properties";
+import Properties from "./Properties";
 
 export default function ModuleCard({ module, onChange }) {
-  
+
   const [updatedModule, setUpdatedModule] = useState({ ...module });
   const [modules, setModules] = useState({});
   const [moduleCount, setModuleCount] = useState(0);
   const moduleID = module.id;
   const modifiedID = moduleID.slice(-5);
-  const [moduleColors,setModuleColors] = useState({});
+  const [moduleColors, setModuleColors] = useState({});
   const [properties, setProperties] = useState({});
 
   useEffect(() => {
@@ -21,7 +21,11 @@ export default function ModuleCard({ module, onChange }) {
     onChange(updatedModule);
   }, [updatedModule])
 
-  
+  //Once the mo
+  useEffect(() => {
+    setUpdatedModule(module)
+  }, [module])
+
   useEffect(() => {
     createChildModules()
 
@@ -42,9 +46,9 @@ export default function ModuleCard({ module, onChange }) {
   };
 
   //Handles the state change of Properties component
-  const handlePropsUpdate =(newProps) => {
+  const handlePropsUpdate = (newProps) => {
     setProperties(newProps);
-    const updatedProps = {...updatedModule, properties: newProps}
+    const updatedProps = { ...updatedModule, properties: newProps }
     setUpdatedModule(updatedProps);
     onChange(updatedModule);
   };
@@ -53,7 +57,7 @@ export default function ModuleCard({ module, onChange }) {
   const createChildModules = () => {
 
     const childModules = {};
-    const colorObj={};
+    const colorObj = {};
     for (let i = 0; i < moduleCount; i++) {
       const id = uuidv4();
       childModules[id] = new Module(id);
@@ -83,17 +87,17 @@ export default function ModuleCard({ module, onChange }) {
         return prevState;
       }
       // Value has changed, update the state
-      if(name === "order")
-            {
-                const newVal = Number(value);
-                console.log(`value for ${name}: ${newVal}`)
-                const newState = {...prevState,[name]:newVal}
-                return newState;
-            }
+      if (name === "order") {
+        const newVal = Number(value);
+        console.log(`value for ${name}: ${newVal}`)
+        const newState = { ...prevState, [name]: newVal }
+        return newState;
+      }
       const updatedState = { ...prevState, [name]: value };
       return updatedState;
     });
   };
+  
 
   return (
     <div className="module-cards-container">
@@ -137,7 +141,7 @@ export default function ModuleCard({ module, onChange }) {
           onChange={handleModuleChange}
           placeholder="Module Count"
         />
-        
+
         <input
           type="text"
           name="showInList"
@@ -154,7 +158,7 @@ export default function ModuleCard({ module, onChange }) {
         />
 
         <Properties handlePropsUpdate={handlePropsUpdate} />
-        
+
       </div>
 
       <div className="child-module-container">
@@ -164,9 +168,12 @@ export default function ModuleCard({ module, onChange }) {
             null
             // Render this if `modules` is empty
             : Object.entries(modules).map(([id, module]) => (
-              <div  className="child-modules" key={id}>
+              <div className="child-modules" key={id}>
 
-                <ChildModule pColor={moduleColors[id]} parentID={moduleID} module={module} onChange={handleChildModuleUpdate} />
+                <ChildModule pColor={moduleColors[id]}
+                  parentID={moduleID}
+                  module={module}
+                  onChange={handleChildModuleUpdate} />
               </div>
             ))
         }
