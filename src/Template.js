@@ -5,54 +5,51 @@ import './Template.css'
 import ModulePreview from "./ModulePreview";
 
 
-export default function Template({ createModules, copy, copySuccess, id,childModules,handleViewModuleButton }) {
+export default function Template({ template,testUpdate}) {
   const [moduleCount, setModuleCount] = useState(0);
+  const [path,setPath] = useState("template.modules")
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   
-
-  //each time we change the name, we re-render and update obj
-  useEffect(() => {
-
-    const updatedTemplate = {
-      id: uuidv4(),
-      name: name,
-      description: description
-    }
-    //setTemplate(updatedTemplate);
-    createModules(updatedTemplate, moduleCount);
-  }, [name, description, moduleCount]);
+const handlePropInput = (e) =>{
+  let lvl=0;
+  //const {name,value} = e.target;
+  //let updated = {[name]:value};
+  //console.log("Debug #1 - Template handlePropInput function - var e= ", JSON.stringify(e.target))
+  testUpdate(e,template.id,lvl)
+}
 
   return (
     <div className="template-container">
 
       <div className="template-heading">
-        <p className="test-background">Template ID: {id || ""}</p>
+        <p className="test-background">Template ID: {""}</p>
       </div>
       <input
         className="input-field"
         type="text"
         placeholder="Name"
-        onChange={(e) => setName(e.target.value)} />
+        name="name"
+        onChange={handlePropInput} />
 
       <textarea
         className="input-field"
         type="text"
+        name="description"
         placeholder="Description"
-        onChange={(e) => setDescription(e.target.value)}
+        onChange={handlePropInput}
       />
 
       <input
         className="input-field"
         type="text"
-        onChange={(e) => setModuleCount(Number(e.target.value))}
+        name="moduleCount"
+        onChange={handlePropInput}
         placeholder="Module Number"
       />
       
-      <ModulePreview childModules={childModules} handleViewModuleButton={handleViewModuleButton}/>
+      { /*<ModulePreview childModules={childModules} handleViewModuleButton={handleViewModuleButton}/> */}
 
-      <button className="copy-button" type="button" onClick={copy}>Copy</button>
-      {copySuccess && <div className="copy-success" >{copySuccess}</div>}
     </div>
   );
 }

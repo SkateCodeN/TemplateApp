@@ -9,97 +9,112 @@ import { v4 as uuidv4 } from 'uuid';
 
 function App() {
 
-  const [modules, setModules] = useState({});
-  const [template, setTemplate] = useState({});
-  const [copySuccess, setCopySuccess] = useState('');
-  const modifiedID = (template.id) ? template.id.slice(-5) : "";
-  const [viewModule, setViewModule] = useState(null);
+    const [template, setTemplate] = useState({
+        id: uuidv4(),
+        name: "test name",
+        modules: {},
+        description: "the last supper"
+    });
 
-  const copyTemplateToClipboard = async () => {
-    try {
-      // Stringify the template object to make it ready for copying
-      const templateStr = JSON.stringify(template, null, 2);
-      await navigator.clipboard.writeText(templateStr);
-      setCopySuccess('Template copied to clipboard!');
-    } catch (err) {
-      setCopySuccess('Failed to copy template.');
-      console.error('Failed to copy text to clipboard: ', err);
-    }
-  };
+    const modifiedID = (template.id) ? template.id.slice(-5) : "";
 
-  useEffect(() => {
-    setCopySuccess("");
-
-  }, [template])
-
-
-  const createModules = (mainTemplate, moduleCount) => {
-
-    //if module count is 0, make sure to erase viewMod state
-    if (moduleCount === 0) setViewModule(null);
-
-    const childModules = {};
-    for (let i = 0; i < moduleCount; i++) {
-      const id = uuidv4();
-      childModules[id] = new Module(id);
-    }
-
-    setModules(childModules);
-    mainTemplate.modules = childModules;
-    setTemplate(mainTemplate);
-
-  }
-  //This is the module we want to be displayed
-  const handleViewModuleButton = (module,id) => {
-    setViewModule(template.modules[id]);
-  }
-
-  const handleModuleUpdate = (updatedModule) => {
-    // Create a new object for the updated template
-    const updatedTemplate = {
-      ...template,
-      modules: {
-        ...template.modules,
-        [updatedModule.id]: updatedModule
-      }
-    };
-
-    setTemplate(updatedTemplate);
-  };
-
-  return (
-
-    <div className="App">
-
-      <div className="card-container" >
-        <div className="spaceBackground" >
-          <Template id={modifiedID}
-            createModules={createModules}
-            copy={copyTemplateToClipboard}
-            copySuccess={copySuccess}
-            childModules={modules}
-            handleViewModuleButton={handleViewModuleButton}
-          />
-        </div>
-
-        <JSONView template={template} />
-      </div>
-
-      <div className='modules-div'>
-        <p>Testing Preview</p>
-        {
-          viewModule &&
-          <ModuleCard
-            module={viewModule}
-            onChange={handleModuleUpdate}
-
-          />
+    const updateModuleById33 = (moduleId, depth, updatedData) => {
+        const {name, value} = updatedData.target;
+        console.log(`Debug #4- App component - updatedModuleId: name=[${name} : value=[${value}]]`)
+        //console.log(`Debug #5- App component - updatedModuleId: updatedData var=${updatedData}`)
+        if (depth === 0) {
+            if (template.id === moduleId) {
+                setTemplate((prevState =>{
+                    const newState = {...prevState, [name]:value}
+                    return newState;
+                }));
+                // Update the module properties here
+                //let updatedModule = { ...template, [name]:value }
+                //setTemplate(updatedModule)
+                return template;
+            }
+           // console.log("current Template state", template)
+            return template;
         }
-      </div>
+    }
+    const updateModuleById = (moduleId, depth, updatedData) => {
+        const { name, value } = updatedData.target;
+      
+        // Function to recursively update the object
+        const recursiveUpdate = (obj, currentDepth) => {
+          if (currentDepth === depth) {
+            if (obj.id === moduleId) {
+              return { ...obj, [name]: value }; // Update at the target depth
+            }
+            return obj;
+          }
+      
+          // Assuming 'modules' is the key where nested modules are stored
+          if (obj.modules) {
+            return {
+              ...obj,
+              modules: Object.keys(obj.modules).reduce((acc, key) => {
+                acc[key] = recursiveUpdate(obj.modules[key], currentDepth + 1);
+                return acc;
+              }, {})
+            };
+          }
+      
+          return obj; // Return the object unchanged if not at the correct depth
+        };
+      
+        // Update the template state
+        setTemplate(prevTemplate => recursiveUpdate(prevTemplate, 0));
+      };
+    const updateTemplate33 = (updatedData, id, depth) => {
+        //console.log("Debug #2 - App component - updateTemplate33 function: ", updatedData.target)
+        let prevTemplate = updateModuleById(id,depth,updatedData)
 
-    </div>
+        console.log("Debug #3 - App component - Template State: ", template)
+           // console.log("Level 0 Object:",JSON.stringify(template))
+            //find the module based on id and level is the upperbound
+            /*
+            setTemplate(prevTemplate => {
+                let keys = path.split('.');
+                let temp = { ...prevTemplate };
+                let current = temp;
+                console.log(
+                    `keys: ${keys}
+                
+            `)
 
-  );
-}
+                for (let i = 0; i < keys.length - 1; i++) {
+                    let key = keys[i];
+                    if (!current[key]) current[key] = {};
+                    current = current[key];
+                }
 
-export default App;
+                current[keys[keys.length - 1]] = updatedData;
+
+                return temp;
+            }); */
+        };
+
+        return (
+
+            <div className="App">
+
+                <div className="card-container" >
+                    <div className="spaceBackground" >
+                        <Template template={template} testUpdate={updateTemplate33} />
+                    </div>
+
+                    <JSONView template={template} />
+                </div>
+
+                <div className='modules-div'>
+                    <p>Template.Modules</p>
+
+                </div>
+
+            </div>
+
+        );
+    }
+
+    export default App;

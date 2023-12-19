@@ -93,8 +93,8 @@ export default function ModuleCard({ module, onChange }) {
         const newState = { ...prevState, [name]: newVal }
         return newState;
       }
-      const updatedState = { ...prevState, [name]: value };
-      return updatedState;
+        const updatedState = { ...prevState, [name]: value };
+        return updatedState;
     });
   };
   
